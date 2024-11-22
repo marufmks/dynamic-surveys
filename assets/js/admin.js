@@ -8,13 +8,25 @@ jQuery(document).ready(function($) {
         "timeOut": "3000"
     };
 
+    // Helper function to escape HTML
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
     // Use a single event delegation for all dynamic elements
     const $adminWrap = $('.ds-admin-wrap');
 
     // Add new option - single row
     $adminWrap.on('click', '#ds-add-option', function(e) {
         e.preventDefault();
-        const newOption = wp.template('survey-option')(); // Create template for option row
+        const newOption = `
+            <div class="option-row">
+                <input type="text" name="options[]" required>
+                <button type="button" class="ds-remove-option">${wp.i18n.__('Remove', 'dynamic-surveys')}</button>
+            </div>
+        `;
         $('#ds-options').append(newOption);
         toastr.success(wp.i18n.__('New option added', 'dynamic-surveys'));
     });
@@ -44,7 +56,6 @@ jQuery(document).ready(function($) {
         e.stopImmediatePropagation();
         
         if (isSubmitting) {
-            console.log('Form is already submitting');
             return false;
         }
         
@@ -63,8 +74,6 @@ jQuery(document).ready(function($) {
         }
         
         isSubmitting = true;
-        console.log('Starting form submission');
-        
         const $submitButton = $(this).find('button[type="submit"]');
         $submitButton.prop('disabled', true);
         
@@ -79,37 +88,40 @@ jQuery(document).ready(function($) {
             processData: false,
             contentType: false,
             success: function(response) {
-                console.log('Form submission response:', response);
                 if (response.success) {
                     $createSurveyForm[0].reset();
                     
                     $('#ds-options').html(`
                         <div class="option-row">
                             <input type="text" name="options[]" required>
-                            <button type="button" class="ds-remove-option">Remove</button>
+                            <button type="button" class="ds-remove-option">${wp.i18n.__('Remove', 'dynamic-surveys')}</button>
                         </div>
                         <div class="option-row">
                             <input type="text" name="options[]" required>
-                            <button type="button" class="ds-remove-option">Remove</button>
+                            <button type="button" class="ds-remove-option">${wp.i18n.__('Remove', 'dynamic-surveys')}</button>
                         </div>
                     `);
                     
                     const survey = response.data.survey;
                     const newRow = `
                         <tr>
-                            <td>${survey.title}</td>
-                            <td>${survey.question}</td>
-                            <td>${survey.status}</td>
-                            <td><code title="Click to copy shortcode">[dynamic_survey id="${survey.id}"]</code></td>
+                            <td>${escapeHtml(survey.title)}</td>
+                            <td>${escapeHtml(survey.question)}</td>
+                            <td>${escapeHtml(survey.status)}</td>
+                            <td><code title="${wp.i18n.__('Click to copy shortcode', 'dynamic-surveys')}">[dynamic_survey id="${escapeHtml(survey.id)}"]</code></td>
                             <td>
-                                <button class="button ds-delete-survey" data-id="${survey.id}">Delete</button>
-                                <button class="button ds-toggle-status" data-id="${survey.id}">Close</button>
+                                <button class="button ds-delete-survey" data-id="${escapeHtml(survey.id)}">
+                                    ${wp.i18n.__('Delete', 'dynamic-surveys')}
+                                </button>
+                                <button class="button ds-toggle-status" data-id="${escapeHtml(survey.id)}">
+                                    ${wp.i18n.__('Close', 'dynamic-surveys')}
+                                </button>
                             </td>
                         </tr>
                     `;
                     $('.ds-survey-table tbody').prepend(newRow);
                     
-                    toastr.success(wp.i18n.__('Survey created successfully!', 'dynamic-surveys'));
+                    toastr.success(response.data.message || wp.i18n.__('Survey created successfully!', 'dynamic-surveys'));
                 } else {
                     toastr.error(response.data.message || wp.i18n.__('Error creating survey', 'dynamic-surveys'));
                 }
@@ -118,7 +130,6 @@ jQuery(document).ready(function($) {
                 toastr.error(wp.i18n.__('Error creating survey. Please try again.', 'dynamic-surveys'));
             },
             complete: function() {
-                console.log('Form submission complete');
                 setTimeout(() => {
                     isSubmitting = false;
                     $submitButton.prop('disabled', false);
@@ -129,17 +140,84 @@ jQuery(document).ready(function($) {
         return false;
     });
 
-    // Handle survey deletion with event delegation
-    $adminWrap.on('click', '.ds-delete-survey', function(e) {
+    // Handle survey status toggle
+    $(document).on('click', '.ds-toggle-status', function(e) {
         e.preventDefault();
-        e.stopPropagation();
         
         const $button = $(this);
         if ($button.data('processing')) return;
         
+        $button.data('processing', true);
+        const surveyId = $button.data('id');
+        const currentStatus = $button.text().toLowerCase();
+        
+        $button.prop('disabled', true);
+        
+        $.ajax({
+            url: dsAdmin.ajaxUrl,
+            type: 'POST',
+            data: {
+                action: 'ds_toggle_survey_status',
+                nonce: dsAdmin.nonce,
+                survey_id: surveyId,
+                current_status: currentStatus === 'close' ? 'open' : 'closed'
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Update button text
+                    const newStatus = response.data.new_status;
+                    $button.text(newStatus === 'open' ? wp.i18n.__('Close', 'dynamic-surveys') : wp.i18n.__('Open', 'dynamic-surveys'));
+                    
+                    // Update status cell
+                    $button.closest('tr').find('td:nth-child(3)').text(newStatus);
+                    
+                    toastr.success(wp.i18n.__('Survey status updated successfully', 'dynamic-surveys'));
+                } else {
+                    toastr.error(response.data.message || wp.i18n.__('Failed to update survey status', 'dynamic-surveys'));
+                }
+            },
+            error: function() {
+                toastr.error(wp.i18n.__('Error updating survey status. Please try again.', 'dynamic-surveys'));
+            },
+            complete: function() {
+                $button.data('processing', false);
+                $button.prop('disabled', false);
+            }
+        });
+    });
+
+    // Handle shortcode copying
+    $(document).on('click', '.ds-survey-table code', function() {
+        const shortcode = $(this).text();
+        
+        // Create temporary textarea
+        const $temp = $("<textarea>");
+        $("body").append($temp);
+        $temp.val(shortcode).select();
+        
+        try {
+            // Execute copy command
+            document.execCommand("copy");
+            toastr.success(wp.i18n.__('Shortcode copied to clipboard!', 'dynamic-surveys'));
+        } catch (err) {
+            toastr.error(wp.i18n.__('Failed to copy shortcode', 'dynamic-surveys'));
+            console.error('Copy failed:', err);
+        }
+        
+        // Remove temporary textarea
+        $temp.remove();
+    });
+
+    // Handle survey deletion
+    $(document).on('click', '.ds-delete-survey', function(e) {
+        e.preventDefault();
+        
         if (!confirm(wp.i18n.__('Are you sure you want to delete this survey?', 'dynamic-surveys'))) {
             return;
         }
+        
+        const $button = $(this);
+        if ($button.data('processing')) return;
         
         $button.data('processing', true);
         const surveyId = $button.data('id');
@@ -173,76 +251,5 @@ jQuery(document).ready(function($) {
                 $button.prop('disabled', false);
             }
         });
-    });
-
-    // Handle survey status toggle with event delegation
-    $adminWrap.on('click', '.ds-toggle-status', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const $button = $(this);
-        if ($button.data('processing')) return;
-        
-        $button.data('processing', true);
-        const surveyId = $button.data('id');
-        const currentStatus = $button.text().toLowerCase();
-        
-        $button.prop('disabled', true);
-        
-        $.ajax({
-            url: dsAdmin.ajaxUrl,
-            type: 'POST',
-            data: {
-                action: 'ds_toggle_survey_status',
-                nonce: dsAdmin.nonce,
-                survey_id: surveyId,
-                current_status: currentStatus === 'close' ? 'open' : 'closed'
-            },
-            success: function(response) {
-                if (response.success) {
-                    $button.text(response.data.new_status === 'open' ? 'Close' : 'Open');
-                    $button.closest('tr').find('td:nth-child(3)').text(response.data.new_status);
-                    toastr.success(wp.i18n.__('Survey status updated successfully', 'dynamic-surveys'));
-                } else {
-                    toastr.error(response.data.message || wp.i18n.__('Failed to update survey status', 'dynamic-surveys'));
-                }
-            },
-            error: function() {
-                toastr.error(wp.i18n.__('Error updating survey status. Please try again.', 'dynamic-surveys'));
-            },
-            complete: function() {
-                $button.data('processing', false);
-                $button.prop('disabled', false);
-            }
-        });
-    });
-
-    // Handle shortcode copying
-    $(document).on('click', '.ds-survey-table code', function(e) {
-        e.preventDefault();
-        
-        const shortcode = $(this).text();
-        
-        // Create temporary textarea
-        const $temp = $("<textarea>");
-        $("body").append($temp);
-        $temp.val(shortcode).select();
-        
-        try {
-            // Copy text
-            document.execCommand("copy");
-            toastr.success(wp.i18n.__('Shortcode copied to clipboard!', 'dynamic-surveys'));
-        } catch (err) {
-            toastr.error(wp.i18n.__('Failed to copy shortcode', 'dynamic-surveys'));
-            console.error('Failed to copy:', err);
-        }
-        
-        // Remove temporary textarea
-        $temp.remove();
-    });
-
-    // Add tooltip on shortcode hover
-    $(document).on('mouseenter', '.ds-survey-table code', function() {
-        $(this).attr('title', 'Click to copy shortcode');
     });
 }); 

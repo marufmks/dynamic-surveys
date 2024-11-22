@@ -2,8 +2,13 @@
     <?php if ($has_voted): ?>
         <div class="ds-survey-results">
             <h3><?php echo esc_html($survey->question); ?></h3>
-            <canvas id="ds-results-chart-<?php echo esc_attr($survey->id); ?>" 
-                    data-results='<?php echo esc_attr(json_encode($results)); ?>'></canvas>
+            <div class="ds-results-wrapper">
+                <canvas id="ds-results-chart-<?php echo esc_attr($survey->id); ?>" 
+                        data-results='<?php echo esc_attr(json_encode($results)); ?>'></canvas>
+            </div>
+            <p class="ds-vote-message">
+                <?php esc_html_e('Thank you for participating in this survey!', 'dynamic-surveys'); ?>
+            </p>
         </div>
     <?php else: ?>
         <div class="ds-survey-form">
@@ -24,7 +29,9 @@
                         </label>
                     </div>
                 <?php endforeach; ?>
-                <button type="submit" class="ds-submit-vote"><?php esc_html_e('Vote', 'dynamic-surveys'); ?></button>
+                <button type="submit" class="ds-submit-vote">
+                    <?php esc_html_e('Submit Vote', 'dynamic-surveys'); ?>
+                </button>
             </form>
         </div>
     <?php endif; ?>

@@ -8,15 +8,12 @@ jQuery(document).ready(function($) {
         "timeOut": "3000"
     };
 
-    // Initialize existing results charts
-    $('.ds-survey-results canvas').each(function() {
-        const $canvas = $(this);
-        const results = $canvas.data('results');
-        if (results) {
-            const ctx = this.getContext('2d');
-            new Chart(ctx, results);
-        }
-    });
+    // Helper function to escape HTML
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
 
     // Handle vote submission
     $('.ds-vote-form').on('submit', function(e) {
@@ -47,8 +44,8 @@ jQuery(document).ready(function($) {
                 if (response.success) {
                     // Create results display
                     const $results = $('<div class="ds-survey-results"></div>');
-                    $results.append('<h3>' + wp.escapeHtml($form.siblings('h3').text()) + '</h3>');
-                    $results.append('<canvas id="ds-results-chart-' + wp.escapeHtml(surveyId) + '"></canvas>');
+                    $results.append('<h3>' + escapeHtml($form.siblings('h3').text()) + '</h3>');
+                    $results.append('<canvas id="ds-results-chart-' + escapeHtml(surveyId) + '"></canvas>');
                     
                     // Replace form with results
                     $form.parent().replaceWith($results);
@@ -68,5 +65,17 @@ jQuery(document).ready(function($) {
                 $submitButton.prop('disabled', false);
             }
         });
+    });
+
+    // Initialize existing results charts
+    $('.ds-survey-results canvas').each(function() {
+        const $canvas = $(this);
+        const results = $canvas.data('results');
+        
+        if (results) {
+            const ctx = this.getContext('2d');
+            new Chart(ctx, results);
+            toastr.info(wp.i18n.__('Survey results loaded', 'dynamic-surveys'));
+        }
     });
 }); 

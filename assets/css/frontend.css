@@ -74,4 +74,48 @@
 .ds-survey-results canvas {
     max-width: 400px;
     margin: 0 auto;
+}
+
+.ds-message {
+    text-align: center;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.ds-login-link {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: #0073aa;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.ds-login-link:hover {
+    background: #005177;
+    color: #fff;
+    text-decoration: none;
+}
+
+.ds-results-wrapper {
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.ds-vote-message {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+.ds-survey-results h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
 } 
