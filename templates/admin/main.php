@@ -59,6 +59,9 @@
                     <button class="button ds-toggle-status" data-id="<?php echo esc_attr($survey->id); ?>">
                         <?php echo $survey->status === 'open' ? esc_html__('Close', 'dynamic-surveys') : esc_html__('Open', 'dynamic-surveys'); ?>
                     </button>
+                    <button type="button" class="button ds-export-csv" data-survey-id="<?php echo esc_attr($survey->id); ?>">
+                        <?php _e('Export Results (CSV)', 'dynamic-surveys'); ?>
+                    </button>
                 </td>
             </tr>
             <?php endforeach; ?>

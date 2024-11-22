@@ -7,26 +7,60 @@ if (!defined('ABSPATH')) {
 add_action('wp_ajax_ds_submit_vote', 'ds_handle_vote_submission');
 add_action('wp_ajax_nopriv_ds_submit_vote', 'ds_handle_vote_submission');
 
+function ds_get_client_ip() {
+    // Check for shared internet/ISP IP
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        return $_SERVER['HTTP_CLIENT_IP'];
+    }
+    
+    // Check for IPs passing through proxies
+    if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        // HTTP_X_FORWARDED_FOR can contain multiple IPs
+        $forwarded_ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        return trim($forwarded_ips[0]);
+    }
+    
+    // If on localhost, return a dummy IP for testing
+    if ($_SERVER['REMOTE_ADDR'] == '::1' || $_SERVER['REMOTE_ADDR'] == '127.0.0.1') {
+        return '192.168.1.' . rand(2, 254); // Generate a random local IP for testing
+    }
+    
+    return $_SERVER['REMOTE_ADDR'];
+}
+
 function ds_handle_vote_submission() {
     check_ajax_referer('ds-frontend-nonce', 'nonce');
     
     $survey_id = intval($_POST['survey_id']);
     $option_id = sanitize_text_field($_POST['option']);
     $user_id = get_current_user_id();
+    $ip_address = ds_get_client_ip();
     
-    if (!$user_id || DS_Survey_Manager::has_user_voted($survey_id, $user_id)) {
+    // Check for existing votes
+    global $wpdb;
+    $existing_vote = $wpdb->get_var($wpdb->prepare(
+        "SELECT id FROM {$wpdb->prefix}ds_votes 
+         WHERE survey_id = %d 
+         AND (user_id = %d OR (user_id = 0 AND ip_address = %s))",
+        $survey_id,
+        $user_id,
+        $ip_address
+    ));
+    
+    if ($existing_vote) {
         wp_send_json_error(['message' => __('You have already voted on this survey', 'dynamic-surveys')]);
     }
     
-    global $wpdb;
+    // Insert vote
     $result = $wpdb->insert(
         "{$wpdb->prefix}ds_votes",
         array(
             'survey_id' => $survey_id,
             'user_id' => $user_id,
             'option_id' => $option_id,
-            'ip_address' => $_SERVER['REMOTE_ADDR']
-        )
+            'ip_address' => $ip_address
+        ),
+        array('%d', '%d', '%s', '%s')
     );
 
     if ($result === false) {

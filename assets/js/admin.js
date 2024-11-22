@@ -252,4 +252,11 @@ jQuery(document).ready(function($) {
             }
         });
     });
+
+    $('.ds-export-csv').on('click', function(e) {
+        e.preventDefault();
+        const surveyId = $(this).data('survey-id');
+        const url = dsAdmin.ajaxUrl + '?action=ds_export_survey&survey_id=' + surveyId + '&nonce=' + dsAdmin.nonce;
+        window.location.href = url;
+    });
 }); 

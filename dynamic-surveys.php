@@ -57,7 +57,8 @@ function ds_activate_plugin() {
         ip_address varchar(45),
         created_at datetime DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY  (id),
-        KEY survey_user (survey_id, user_id)
+        KEY survey_user (survey_id, user_id),
+        KEY survey_ip (survey_id, ip_address)
     ) $charset_collate;";
     
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -98,4 +99,4 @@ function ds_frontend_scripts() {
         'ajaxUrl' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('ds-frontend-nonce')
     ));
-} 
+}

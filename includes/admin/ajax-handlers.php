@@ -7,6 +7,7 @@ if (!defined('ABSPATH')) {
 add_action('wp_ajax_ds_create_survey', 'ds_admin_create_survey_handler');
 add_action('wp_ajax_ds_delete_survey', 'ds_admin_delete_survey_handler');
 add_action('wp_ajax_ds_toggle_survey_status', 'ds_admin_toggle_survey_status_handler');
+add_action('wp_ajax_ds_export_survey', 'ds_export_survey_results');
 
 function ds_admin_create_survey_handler() {
     // Verify nonce
@@ -132,4 +133,82 @@ function ds_admin_toggle_survey_status_handler() {
         'message' => __('Survey status updated successfully', 'dynamic-surveys'),
         'new_status' => $new_status
     ]);
+}
+
+function ds_export_survey_results() {
+    // Check nonce first
+    if (!isset($_GET['nonce']) || !wp_verify_nonce($_GET['nonce'], 'ds_admin_nonce')) {
+        wp_die(__('Security check failed', 'dynamic-surveys'));
+    }
+
+    // Check permissions
+    if (!current_user_can('manage_options')) {
+        wp_die(__('You do not have sufficient permissions', 'dynamic-surveys'));
+    }
+
+    $survey_id = isset($_GET['survey_id']) ? intval($_GET['survey_id']) : 0;
+    if (!$survey_id) {
+        wp_die(__('Invalid survey ID', 'dynamic-surveys'));
+    }
+
+    global $wpdb;
+    
+    // Get survey details
+    $survey = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM {$wpdb->prefix}ds_surveys WHERE id = %d",
+        $survey_id
+    ));
+
+    if (!$survey) {
+        wp_die(__('Survey not found', 'dynamic-surveys'));
+    }
+
+    // Get votes with user information
+    $results = $wpdb->get_results($wpdb->prepare(
+        "SELECT v.*, u.user_email, u.display_name 
+         FROM {$wpdb->prefix}ds_votes v 
+         LEFT JOIN {$wpdb->users} u ON v.user_id = u.ID 
+         WHERE v.survey_id = %d 
+         ORDER BY v.created_at",
+        $survey_id
+    ));
+
+    // Set headers for CSV download
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename=survey-' . $survey_id . '-results.csv');
+    header('Pragma: no-cache');
+    header('Expires: 0');
+
+    // Create CSV file
+    $output = fopen('php://output', 'w');
+    
+    // Add UTF-8 BOM for proper Excel encoding
+    fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF));
+
+    // CSV Headers
+    fputcsv($output, array(
+        __('Question', 'dynamic-surveys'),
+        __('Option Selected', 'dynamic-surveys'),
+        __('User Email', 'dynamic-surveys'),
+        __('User Name', 'dynamic-surveys'),
+        __('IP Address', 'dynamic-surveys'),
+        __('Date', 'dynamic-surveys')
+    ));
+
+    $options = json_decode($survey->options, true);
+    
+    // Add data rows
+    foreach ($results as $row) {
+        fputcsv($output, array(
+            $survey->question,
+            isset($options[$row->option_id]) ? $options[$row->option_id] : '',
+            $row->user_email ?: __('Anonymous', 'dynamic-surveys'),
+            $row->display_name ?: __('Anonymous', 'dynamic-surveys'),
+            $row->ip_address,
+            $row->created_at
+        ));
+    }
+
+    fclose($output);
+    exit();
 } 

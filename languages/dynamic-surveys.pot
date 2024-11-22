@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-22T14:22:15+00:00\n"
+"POT-Creation-Date: 2024-11-22T16:26:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: dynamic-surveys\n"
@@ -40,70 +40,108 @@ msgstr ""
 msgid "https://https://github.com/marufmks/"
 msgstr ""
 
-#: includes/admin/ajax-handlers.php:14
-#: includes/admin/ajax-handlers.php:72
-#: includes/admin/ajax-handlers.php:106
+#: includes/admin/ajax-handlers.php:15
+#: includes/admin/ajax-handlers.php:73
+#: includes/admin/ajax-handlers.php:107
+#: includes/admin/ajax-handlers.php:141
 msgid "Security check failed"
 msgstr ""
 
-#: includes/admin/ajax-handlers.php:19
-#: includes/admin/ajax-handlers.php:77
-#: includes/admin/ajax-handlers.php:111
+#: includes/admin/ajax-handlers.php:20
+#: includes/admin/ajax-handlers.php:78
+#: includes/admin/ajax-handlers.php:112
 msgid "Insufficient permissions"
 msgstr ""
 
-#: includes/admin/ajax-handlers.php:24
+#: includes/admin/ajax-handlers.php:25
 msgid "Please fill in all required fields"
 msgstr ""
 
-#: includes/admin/ajax-handlers.php:58
+#: includes/admin/ajax-handlers.php:59
 msgid "Failed to create survey"
 msgstr ""
 
-#: includes/admin/ajax-handlers.php:64
+#: includes/admin/ajax-handlers.php:65
 #: assets/js/admin.js:124
 msgid "Survey created successfully!"
 msgstr ""
 
-#: includes/admin/ajax-handlers.php:90
+#: includes/admin/ajax-handlers.php:91
 #: assets/js/admin.js:243
 msgid "Failed to delete survey"
 msgstr ""
 
-#: includes/admin/ajax-handlers.php:100
+#: includes/admin/ajax-handlers.php:101
 #: assets/js/admin.js:241
 msgid "Survey deleted successfully"
 msgstr ""
 
-#: includes/admin/ajax-handlers.php:128
+#: includes/admin/ajax-handlers.php:129
 #: assets/js/admin.js:176
 msgid "Failed to update survey status"
 msgstr ""
 
-#: includes/admin/ajax-handlers.php:132
+#: includes/admin/ajax-handlers.php:133
 #: assets/js/admin.js:174
 msgid "Survey status updated successfully"
 msgstr ""
 
-#: includes/frontend/ajax-handlers.php:18
-msgid "You have already voted on this survey"
+#: includes/admin/ajax-handlers.php:146
+msgid "You do not have sufficient permissions"
 msgstr ""
 
-#: includes/frontend/ajax-handlers.php:33
-msgid "Failed to submit vote"
-msgstr ""
-
-#: includes/frontend/ajax-handlers.php:38
-#: assets/js/frontend.js:57
-msgid "Vote submitted successfully!"
-msgstr ""
-
+#: includes/admin/ajax-handlers.php:151
 #: includes/frontend/shortcodes.php:14
 msgid "Invalid survey ID"
 msgstr ""
 
+#: includes/admin/ajax-handlers.php:163
 #: includes/frontend/shortcodes.php:19
 msgid "Survey not found"
+msgstr ""
+
+#: includes/admin/ajax-handlers.php:190
+#: templates/admin/main.php:12
+#: templates/admin/main.php:39
+msgid "Question"
+msgstr ""
+
+#: includes/admin/ajax-handlers.php:191
+msgid "Option Selected"
+msgstr ""
+
+#: includes/admin/ajax-handlers.php:192
+msgid "User Email"
+msgstr ""
+
+#: includes/admin/ajax-handlers.php:193
+msgid "User Name"
+msgstr ""
+
+#: includes/admin/ajax-handlers.php:194
+msgid "IP Address"
+msgstr ""
+
+#: includes/admin/ajax-handlers.php:195
+msgid "Date"
+msgstr ""
+
+#: includes/admin/ajax-handlers.php:205
+#: includes/admin/ajax-handlers.php:206
+msgid "Anonymous"
+msgstr ""
+
+#: includes/frontend/ajax-handlers.php:51
+msgid "You have already voted on this survey"
+msgstr ""
+
+#: includes/frontend/ajax-handlers.php:67
+msgid "Failed to submit vote"
+msgstr ""
+
+#: includes/frontend/ajax-handlers.php:72
+#: assets/js/frontend.js:57
+msgid "Vote submitted successfully!"
 msgstr ""
 
 #: includes/frontend/shortcodes.php:25
@@ -124,11 +162,6 @@ msgstr ""
 
 #: templates/admin/main.php:7
 msgid "Survey Title"
-msgstr ""
-
-#: templates/admin/main.php:12
-#: templates/admin/main.php:39
-msgid "Question"
 msgstr ""
 
 #: templates/admin/main.php:17
@@ -190,6 +223,10 @@ msgstr ""
 #: templates/admin/main.php:60
 #: assets/js/admin.js:169
 msgid "Open"
+msgstr ""
+
+#: templates/admin/main.php:63
+msgid "Export Results (CSV)"
 msgstr ""
 
 #: templates/frontend/survey.php:10
