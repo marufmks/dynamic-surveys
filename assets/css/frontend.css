@@ -1,0 +1,77 @@
+.ds-survey {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.ds-option {
+    margin-bottom: 10px;
+}
+
+.ds-submit {
+    margin-top: 15px;
+    padding: 8px 16px;
+    background-color: #0073aa;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.ds-results {
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.ds-survey-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.ds-survey-container h3 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.ds-option {
+    margin-bottom: 15px;
+}
+
+.ds-option label {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.ds-submit-vote {
+    background: #0073aa;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.ds-submit-vote:hover {
+    background: #005177;
+}
+
+.ds-submit-vote:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.ds-survey-results {
+    text-align: center;
+}
+
+.ds-survey-results canvas {
+    max-width: 400px;
+    margin: 0 auto;
+} 
