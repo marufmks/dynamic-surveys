@@ -1,23 +1,53 @@
-# Copyright (C) 2024 Dynamic Surveys
-# This file is distributed under the same license as the Dynamic Surveys package.
+# Copyright (C) 2024 Maruf Khan
+# This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
 "Project-Id-Version: Dynamic Surveys 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/dynamic-surveys\n"
-"POT-Creation-Date: 2024-11-22 09:13:25+00:00\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2024-11-22T09:38:35+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: dynamic-surveys\n"
 
-#: includes/admin/ajax-handlers.php:14 includes/admin/ajax-handlers.php:72
+#. Plugin Name of the plugin
+#: dynamic-surveys.php
+#: templates/admin/main.php:2
+msgid "Dynamic Surveys"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: dynamic-surveys.php
+msgid "https://github.com/marufmks/dynamic-surveys"
+msgstr ""
+
+#. Description of the plugin
+#: dynamic-surveys.php
+msgid "A WordPress plugin that allows administrators to create simple surveys and dynamically display aggregated results to users."
+msgstr ""
+
+#. Author of the plugin
+#: dynamic-surveys.php
+msgid "Maruf Khan"
+msgstr ""
+
+#. Author URI of the plugin
+#: dynamic-surveys.php
+msgid "https://https://github.com/marufmks/"
+msgstr ""
+
+#: includes/admin/ajax-handlers.php:14
+#: includes/admin/ajax-handlers.php:72
 #: includes/admin/ajax-handlers.php:106
 msgid "Security check failed"
 msgstr ""
 
-#: includes/admin/ajax-handlers.php:19 includes/admin/ajax-handlers.php:77
+#: includes/admin/ajax-handlers.php:19
+#: includes/admin/ajax-handlers.php:77
 #: includes/admin/ajax-handlers.php:111
 msgid "Insufficient permissions"
 msgstr ""
@@ -31,22 +61,27 @@ msgid "Failed to create survey"
 msgstr ""
 
 #: includes/admin/ajax-handlers.php:64
+#: assets/js/admin.js:112
 msgid "Survey created successfully!"
 msgstr ""
 
 #: includes/admin/ajax-handlers.php:90
+#: assets/js/admin.js:165
 msgid "Failed to delete survey"
 msgstr ""
 
 #: includes/admin/ajax-handlers.php:100
+#: assets/js/admin.js:163
 msgid "Survey deleted successfully"
 msgstr ""
 
 #: includes/admin/ajax-handlers.php:128
+#: assets/js/admin.js:207
 msgid "Failed to update survey status"
 msgstr ""
 
 #: includes/admin/ajax-handlers.php:132
+#: assets/js/admin.js:205
 msgid "Survey status updated successfully"
 msgstr ""
 
@@ -59,6 +94,7 @@ msgid "Failed to submit vote"
 msgstr ""
 
 #: includes/frontend/ajax-handlers.php:38
+#: assets/js/frontend.js:60
 msgid "Vote submitted successfully!"
 msgstr ""
 
@@ -78,10 +114,6 @@ msgstr ""
 msgid "Please log in to participate in the survey"
 msgstr ""
 
-#: templates/admin/main.php:2
-msgid "Dynamic Surveys"
-msgstr ""
-
 #: templates/admin/main.php:4
 msgid "Create New Survey"
 msgstr ""
@@ -90,7 +122,8 @@ msgstr ""
 msgid "Survey Title"
 msgstr ""
 
-#: templates/admin/main.php:12 templates/admin/main.php:39
+#: templates/admin/main.php:12
+#: templates/admin/main.php:39
 msgid "Question"
 msgstr ""
 
@@ -98,7 +131,8 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: templates/admin/main.php:21 templates/admin/main.php:25
+#: templates/admin/main.php:21
+#: templates/admin/main.php:25
 msgid "Remove"
 msgstr ""
 
@@ -149,22 +183,59 @@ msgstr ""
 #: templates/frontend/survey.php:27
 msgid "Vote"
 msgstr ""
-#. Plugin Name of the plugin/theme
-msgid "Dynamic Surveys"
+
+#: assets/js/admin.js:19
+msgid "New option added"
 msgstr ""
 
-#. Plugin URI of the plugin/theme
-msgid "https://github.com/marufmks/dynamic-surveys"
+#: assets/js/admin.js:28
+msgid "Option removed"
 msgstr ""
 
-#. Description of the plugin/theme
-msgid "A WordPress plugin that allows administrators to create simple surveys and dynamically display aggregated results to users."
+#: assets/js/admin.js:30
+msgid "A survey must have at least two options."
 msgstr ""
 
-#. Author of the plugin/theme
-msgid "Maruf Khan"
+#: assets/js/admin.js:61
+msgid "Please fill in all option fields"
 msgstr ""
 
-#. Author URI of the plugin/theme
-msgid "https://https://github.com/marufmks/"
+#: assets/js/admin.js:114
+msgid "Error creating survey"
+msgstr ""
+
+#: assets/js/admin.js:118
+msgid "Error creating survey. Please try again."
+msgstr ""
+
+#: assets/js/admin.js:140
+msgid "Are you sure you want to delete this survey?"
+msgstr ""
+
+#: assets/js/admin.js:169
+msgid "Error deleting survey. Please try again."
+msgstr ""
+
+#: assets/js/admin.js:211
+msgid "Error updating survey status. Please try again."
+msgstr ""
+
+#: assets/js/admin.js:234
+msgid "Shortcode copied to clipboard!"
+msgstr ""
+
+#: assets/js/admin.js:236
+msgid "Failed to copy shortcode"
+msgstr ""
+
+#: assets/js/frontend.js:30
+msgid "Please select an option to vote"
+msgstr ""
+
+#: assets/js/frontend.js:62
+msgid "Error submitting vote"
+msgstr ""
+
+#: assets/js/frontend.js:67
+msgid "Error submitting vote. Please try again."
 msgstr ""
