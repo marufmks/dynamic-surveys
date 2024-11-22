@@ -36,7 +36,7 @@ function ds_enqueue_admin_scripts() {
     // Enqueue scripts with correct paths
     wp_enqueue_script('jquery');
     wp_enqueue_script('toastr-admin-js', DS_PLUGIN_URL.'/assets/js/toastr.min.js', ['jquery'], DS_VERSION, true); 
-    wp_enqueue_script('ds-admin-js', DS_PLUGIN_URL.'/assets/js/admin.js', ['jquery', 'toastr-admin-js', 'wp-i18n', 'wp-escape-html'], DS_VERSION, true);
+    wp_enqueue_script('ds-admin-js', DS_PLUGIN_URL.'/assets/js/admin.js', ['jquery', 'toastr-admin-js', 'wp-i18n', 'wp-escape-html','wp-util'], DS_VERSION, true);
     
     wp_set_script_translations('ds-admin-js', 'dynamic-surveys');
     
