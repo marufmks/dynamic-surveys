@@ -14,14 +14,9 @@ jQuery(document).ready(function($) {
     // Add new option - single row
     $adminWrap.on('click', '#ds-add-option', function(e) {
         e.preventDefault();
-        const newOption = `
-            <div class="option-row">
-                <input type="text" name="options[]" required>
-                <button type="button" class="ds-remove-option">Remove</button>
-            </div>
-        `;
+        const newOption = wp.template('survey-option')(); // Create template for option row
         $('#ds-options').append(newOption);
-        toastr.success('New option added');
+        toastr.success(wp.i18n.__('New option added', 'dynamic-surveys'));
     });
 
     // Remove option using event delegation
@@ -30,9 +25,9 @@ jQuery(document).ready(function($) {
         const totalOptions = $('#ds-options .option-row').length;
         if (totalOptions > 2) {
             $(this).closest('.option-row').remove();
-            toastr.info('Option removed');
+            toastr.info(wp.i18n.__('Option removed', 'dynamic-surveys'));
         } else {
-            toastr.warning('A survey must have at least two options.');
+            toastr.warning(wp.i18n.__('A survey must have at least two options.', 'dynamic-surveys'));
         }
     });
 
@@ -63,7 +58,7 @@ jQuery(document).ready(function($) {
         });
 
         if (emptyOptions) {
-            toastr.error('Please fill in all option fields');
+            toastr.error(wp.i18n.__('Please fill in all option fields', 'dynamic-surveys'));
             return false;
         }
         
@@ -114,13 +109,13 @@ jQuery(document).ready(function($) {
                     `;
                     $('.ds-survey-table tbody').prepend(newRow);
                     
-                    toastr.success(response.data.message || 'Survey created successfully!');
+                    toastr.success(wp.i18n.__('Survey created successfully!', 'dynamic-surveys'));
                 } else {
-                    toastr.error(response.data.message || 'Error creating survey');
+                    toastr.error(response.data.message || wp.i18n.__('Error creating survey', 'dynamic-surveys'));
                 }
             },
             error: function() {
-                toastr.error('Error creating survey. Please try again.');
+                toastr.error(wp.i18n.__('Error creating survey. Please try again.', 'dynamic-surveys'));
             },
             complete: function() {
                 console.log('Form submission complete');
@@ -142,7 +137,7 @@ jQuery(document).ready(function($) {
         const $button = $(this);
         if ($button.data('processing')) return;
         
-        if (!confirm('Are you sure you want to delete this survey?')) {
+        if (!confirm(wp.i18n.__('Are you sure you want to delete this survey?', 'dynamic-surveys'))) {
             return;
         }
         
@@ -165,13 +160,13 @@ jQuery(document).ready(function($) {
                     $row.fadeOut(400, function() {
                         $(this).remove();
                     });
-                    toastr.success('Survey deleted successfully');
+                    toastr.success(wp.i18n.__('Survey deleted successfully', 'dynamic-surveys'));
                 } else {
-                    toastr.error(response.data.message || 'Failed to delete survey');
+                    toastr.error(response.data.message || wp.i18n.__('Failed to delete survey', 'dynamic-surveys'));
                 }
             },
             error: function() {
-                toastr.error('Error deleting survey. Please try again.');
+                toastr.error(wp.i18n.__('Error deleting survey. Please try again.', 'dynamic-surveys'));
             },
             complete: function() {
                 $button.data('processing', false);
@@ -207,13 +202,13 @@ jQuery(document).ready(function($) {
                 if (response.success) {
                     $button.text(response.data.new_status === 'open' ? 'Close' : 'Open');
                     $button.closest('tr').find('td:nth-child(3)').text(response.data.new_status);
-                    toastr.success('Survey status updated successfully');
+                    toastr.success(wp.i18n.__('Survey status updated successfully', 'dynamic-surveys'));
                 } else {
-                    toastr.error(response.data.message || 'Failed to update survey status');
+                    toastr.error(response.data.message || wp.i18n.__('Failed to update survey status', 'dynamic-surveys'));
                 }
             },
             error: function() {
-                toastr.error('Error updating survey status. Please try again.');
+                toastr.error(wp.i18n.__('Error updating survey status. Please try again.', 'dynamic-surveys'));
             },
             complete: function() {
                 $button.data('processing', false);
@@ -236,9 +231,9 @@ jQuery(document).ready(function($) {
         try {
             // Copy text
             document.execCommand("copy");
-            toastr.success('Shortcode copied to clipboard!');
+            toastr.success(wp.i18n.__('Shortcode copied to clipboard!', 'dynamic-surveys'));
         } catch (err) {
-            toastr.error('Failed to copy shortcode');
+            toastr.error(wp.i18n.__('Failed to copy shortcode', 'dynamic-surveys'));
             console.error('Failed to copy:', err);
         }
         

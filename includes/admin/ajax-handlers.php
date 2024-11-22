@@ -11,17 +11,17 @@ add_action('wp_ajax_ds_toggle_survey_status', 'ds_admin_toggle_survey_status_han
 function ds_admin_create_survey_handler() {
     // Verify nonce
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'ds_admin_nonce')) {
-        wp_send_json_error(['message' => 'Security check failed']);
+        wp_send_json_error(['message' => __('Security check failed', 'dynamic-surveys')]);
     }
 
     // Check user capabilities
     if (!current_user_can('manage_options')) {
-        wp_send_json_error(['message' => 'Insufficient permissions']);
+        wp_send_json_error(['message' => __('Insufficient permissions', 'dynamic-surveys')]);
     }
 
     // Validate required fields
     if (empty($_POST['title']) || empty($_POST['question']) || empty($_POST['options'])) {
-        wp_send_json_error(['message' => 'Please fill in all required fields']);
+        wp_send_json_error(['message' => __('Please fill in all required fields', 'dynamic-surveys')]);
     }
 
     // Sanitize input
@@ -55,13 +55,13 @@ function ds_admin_create_survey_handler() {
     );
 
     if ($result === false) {
-        wp_send_json_error(['message' => 'Failed to create survey']);
+        wp_send_json_error(['message' => __('Failed to create survey', 'dynamic-surveys')]);
     }
 
     $survey_data['id'] = $wpdb->insert_id;
     
     wp_send_json_success([
-        'message' => 'Survey created successfully!',
+        'message' => __('Survey created successfully!', 'dynamic-surveys'),
         'survey' => $survey_data
     ]);
 }
@@ -69,12 +69,12 @@ function ds_admin_create_survey_handler() {
 function ds_admin_delete_survey_handler() {
     // Verify nonce
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'ds_admin_nonce')) {
-        wp_send_json_error(['message' => 'Security check failed']);
+        wp_send_json_error(['message' => __('Security check failed', 'dynamic-surveys')]);
     }
 
     // Check user capabilities
     if (!current_user_can('manage_options')) {
-        wp_send_json_error(['message' => 'Insufficient permissions']);
+        wp_send_json_error(['message' => __('Insufficient permissions', 'dynamic-surveys')]);
     }
 
     $survey_id = intval($_POST['survey_id']);
@@ -87,7 +87,7 @@ function ds_admin_delete_survey_handler() {
     );
 
     if ($result === false) {
-        wp_send_json_error(['message' => 'Failed to delete survey']);
+        wp_send_json_error(['message' => __('Failed to delete survey', 'dynamic-surveys')]);
     }
 
     // Also delete related votes
@@ -97,18 +97,18 @@ function ds_admin_delete_survey_handler() {
         ['%d']
     );
 
-    wp_send_json_success(['message' => 'Survey deleted successfully']);
+    wp_send_json_success(['message' => __('Survey deleted successfully', 'dynamic-surveys')]);
 }
 
 function ds_admin_toggle_survey_status_handler() {
     // Verify nonce
     if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'ds_admin_nonce')) {
-        wp_send_json_error(['message' => 'Security check failed']);
+        wp_send_json_error(['message' => __('Security check failed', 'dynamic-surveys')]);
     }
 
     // Check user capabilities
     if (!current_user_can('manage_options')) {
-        wp_send_json_error(['message' => 'Insufficient permissions']);
+        wp_send_json_error(['message' => __('Insufficient permissions', 'dynamic-surveys')]);
     }
 
     $survey_id = intval($_POST['survey_id']);
@@ -125,11 +125,11 @@ function ds_admin_toggle_survey_status_handler() {
     );
 
     if ($result === false) {
-        wp_send_json_error(['message' => 'Failed to update survey status']);
+        wp_send_json_error(['message' => __('Failed to update survey status', 'dynamic-surveys')]);
     }
 
     wp_send_json_success([
-        'message' => 'Survey status updated successfully',
+        'message' => __('Survey status updated successfully', 'dynamic-surveys'),
         'new_status' => $new_status
     ]);
 } 

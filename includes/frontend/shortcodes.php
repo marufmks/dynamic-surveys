@@ -11,21 +11,21 @@ function ds_survey_shortcode($atts) {
     ), $atts);
     
     if (!$atts['id']) {
-        return 'Invalid survey ID';
+        return esc_html__('Invalid survey ID', 'dynamic-surveys');
     }
     
     $survey = DS_Survey_Manager::get_survey($atts['id']);
     if (!$survey) {
-        return 'Survey not found';
+        return esc_html__('Survey not found', 'dynamic-surveys');
     }
     
     if ($survey->status !== 'open') {
-        return 'This survey is currently closed';
+        return esc_html__('This survey is currently closed', 'dynamic-surveys');
     }
     
     $user_id = get_current_user_id();
     if (!$user_id) {
-        return 'Please log in to participate in the survey';
+        return esc_html__('Please log in to participate in the survey', 'dynamic-surveys');
     }
     
     $has_voted = DS_Survey_Manager::has_user_voted($survey->id, $user_id);

@@ -25,6 +25,10 @@ function ds_admin_page() {
 }
 
 function ds_enqueue_admin_scripts() {
+    // Enqueue WordPress scripts
+    wp_enqueue_script('wp-i18n');
+    wp_enqueue_script('wp-escape-html');
+    
     // Enqueue styles with correct paths
     wp_enqueue_style('ds-admin-css', DS_PLUGIN_URL.'/assets/css/admin.css');
     wp_enqueue_style('toastr-admin-css', DS_PLUGIN_URL.'/assets/css/toastr.min.css');
@@ -32,7 +36,9 @@ function ds_enqueue_admin_scripts() {
     // Enqueue scripts with correct paths
     wp_enqueue_script('jquery');
     wp_enqueue_script('toastr-admin-js', DS_PLUGIN_URL.'/assets/js/toastr.min.js', ['jquery'], DS_VERSION, true); 
-    wp_enqueue_script('ds-admin-js', DS_PLUGIN_URL.'/assets/js/admin.js' , ['jquery', 'toastr-admin-js'], DS_VERSION, true);
+    wp_enqueue_script('ds-admin-js', DS_PLUGIN_URL.'/assets/js/admin.js', ['jquery', 'toastr-admin-js', 'wp-i18n', 'wp-escape-html'], DS_VERSION, true);
+    
+    wp_set_script_translations('ds-admin-js', 'dynamic-surveys');
     
     wp_localize_script('ds-admin-js', 'dsAdmin', [
         'ajaxUrl' => admin_url('admin-ajax.php'),

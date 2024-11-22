@@ -24,7 +24,7 @@
                         </label>
                     </div>
                 <?php endforeach; ?>
-                <button type="submit" class="ds-submit-vote">Vote</button>
+                <button type="submit" class="ds-submit-vote"><?php esc_html_e('Vote', 'dynamic-surveys'); ?></button>
             </form>
         </div>
     <?php endif; ?>

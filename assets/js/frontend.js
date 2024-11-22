@@ -24,11 +24,10 @@ jQuery(document).ready(function($) {
         
         const $form = $(this);
         const surveyId = $form.data('survey-id');
-        const $container = $form.closest('.ds-survey-container');
         const selectedOption = $form.find('input[name="survey_option"]:checked').val();
         
         if (!selectedOption) {
-            toastr.warning('Please select an option to vote');
+            toastr.warning(wp.i18n.__('Please select an option to vote', 'dynamic-surveys'));
             return;
         }
         
@@ -48,8 +47,8 @@ jQuery(document).ready(function($) {
                 if (response.success) {
                     // Create results display
                     const $results = $('<div class="ds-survey-results"></div>');
-                    $results.append('<h3>' + $form.siblings('h3').text() + '</h3>');
-                    $results.append('<canvas id="ds-results-chart-' + surveyId + '"></canvas>');
+                    $results.append('<h3>' + wp.escapeHtml($form.siblings('h3').text()) + '</h3>');
+                    $results.append('<canvas id="ds-results-chart-' + wp.escapeHtml(surveyId) + '"></canvas>');
                     
                     // Replace form with results
                     $form.parent().replaceWith($results);
@@ -58,14 +57,14 @@ jQuery(document).ready(function($) {
                     const ctx = document.getElementById('ds-results-chart-' + surveyId).getContext('2d');
                     new Chart(ctx, response.data.results);
                     
-                    toastr.success(response.data.message || 'Vote submitted successfully!');
+                    toastr.success(response.data.message || wp.i18n.__('Vote submitted successfully!', 'dynamic-surveys'));
                 } else {
-                    toastr.error(response.data.message || 'Error submitting vote');
+                    toastr.error(response.data.message || wp.i18n.__('Error submitting vote', 'dynamic-surveys'));
                     $submitButton.prop('disabled', false);
                 }
             },
             error: function() {
-                toastr.error('Error submitting vote. Please try again.');
+                toastr.error(wp.i18n.__('Error submitting vote. Please try again.', 'dynamic-surveys'));
                 $submitButton.prop('disabled', false);
             }
         });
