@@ -1,3 +1,7 @@
+<?php
+if(!defined('ABSPATH')) exit;
+?>
+
 <div class="ds-survey-container" id="ds-survey-<?php echo esc_attr($survey->id); ?>">
     <?php if ($has_voted): ?>
         <div class="ds-survey-results">

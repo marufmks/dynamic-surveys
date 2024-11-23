@@ -1,3 +1,8 @@
+<?php
+if (!defined('ABSPATH')) {
+    exit;
+}
+?>
 <div class="wrap ds-admin-wrap">
     <h1><?php esc_html_e('Dynamic Surveys', 'dynamic-surveys'); ?></h1>
     
