@@ -8,7 +8,7 @@ if(!defined('ABSPATH')) exit;
             <h3><?php echo esc_html($survey->question); ?></h3>
             <div class="ds-results-wrapper">
                 <canvas id="ds-results-chart-<?php echo esc_attr($survey->id); ?>" 
-                        data-results='<?php echo esc_attr(json_encode($results)); ?>'></canvas>
+                        data-results='<?php echo esc_attr(wp_json_encode($results)); ?>'></canvas>
             </div>
             <p class="ds-vote-message">
                 <?php esc_html_e('Thank you for participating in this survey!', 'dynamic-surveys'); ?>

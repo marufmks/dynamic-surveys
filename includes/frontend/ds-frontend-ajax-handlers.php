@@ -91,7 +91,7 @@ if(!class_exists('Ds_frontend_ajax_handlers')) {
             ));
             
             if ($existing_vote) {
-                wp_send_json_error(['message' => __('You have already voted on this survey', 'dynamic-surveys')]);
+                wp_send_json_error(['message' => esc_html_e('You have already voted on this survey', 'dynamic-surveys')]);
             }
             
             // Insert vote
@@ -107,12 +107,12 @@ if(!class_exists('Ds_frontend_ajax_handlers')) {
             );
         
             if ($result === false) {
-                wp_send_json_error(['message' => __('Failed to submit vote', 'dynamic-surveys')]);
+                wp_send_json_error(['message' => esc_html_e('Failed to submit vote', 'dynamic-surveys')]);
             }
             
             $results =$this->ds_get_survey_results($survey_id);
             wp_send_json_success([
-                'message' => __('Vote submitted successfully!', 'dynamic-surveys'),
+                'message' => esc_html_e('Vote submitted successfully!', 'dynamic-surveys'),
                 'results' => $results
             ]);
         }

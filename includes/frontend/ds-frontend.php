@@ -48,18 +48,18 @@ if(!class_exists('Ds_frontend')) {
             ), $atts);
     
             if (!$atts['id']) {
-                return esc_html__('Invalid survey ID', 'dynamic-surveys');
+                return esc_html_e('Invalid survey ID', 'dynamic-surveys');
             }
     
             $survey = DS_Survey_Manager::get_survey($atts['id']);
             if (!$survey) {
-                return esc_html__('Survey not found', 'dynamic-surveys');
+                return esc_html_e('Survey not found', 'dynamic-surveys');
             }
     
             if ($survey->status !== 'open') {
                 return sprintf(
                     '<div class="ds-message">%s</div>',
-                    esc_html__('This survey is currently closed', 'dynamic-surveys')
+                    esc_html_e('This survey is currently closed', 'dynamic-surveys')
                 );
             }
     
@@ -68,9 +68,9 @@ if(!class_exists('Ds_frontend')) {
                 $login_url = wp_login_url(get_permalink());
                 return sprintf(
                     '<div class="ds-message">%s<br><a href="%s" class="ds-login-link">%s</a></div>',
-                    esc_html__('Please log in to participate in the survey', 'dynamic-surveys'),
+                    esc_html_e('Please log in to participate in the survey', 'dynamic-surveys'),
                     esc_url($login_url),
-                    esc_html__('Click here to login', 'dynamic-surveys')
+                    esc_html_e('Click here to login', 'dynamic-surveys')
                 );
             }
     

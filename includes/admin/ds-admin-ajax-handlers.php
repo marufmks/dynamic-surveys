@@ -16,17 +16,17 @@ if (!class_exists('Ds_Admin_Ajax_Handlers')) {
         {
             // Verify nonce
             if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'ds_admin_nonce')) {
-                wp_send_json_error(['message' => __('Security check failed', 'dynamic-surveys')]);
+                wp_send_json_error(['message' => esc_html_e('Security check failed', 'dynamic-surveys')]);
             }
         
             // Check user capabilities
             if (!current_user_can('manage_options')) {
-                wp_send_json_error(['message' => __('Insufficient permissions', 'dynamic-surveys')]);
+                wp_send_json_error(['message' => esc_html_e('Insufficient permissions', 'dynamic-surveys')]);
             }
         
             // Validate required fields
             if (empty($_POST['title']) || empty($_POST['question']) || empty($_POST['options'])) {
-                wp_send_json_error(['message' => __('Please fill in all required fields', 'dynamic-surveys')]);
+                wp_send_json_error(['message' => esc_html_e('Please fill in all required fields', 'dynamic-surveys')]);
             }
         
             // Sanitize input
@@ -52,7 +52,7 @@ if (!class_exists('Ds_Admin_Ajax_Handlers')) {
                 [
                     'title' => $survey_data['title'],
                     'question' => $survey_data['question'],
-                    'options' => json_encode($survey_data['options']),
+                    'options' => wp_json_encode($survey_data['options']),
                     'status' => $survey_data['status'],
                     'created_at' => $survey_data['created_at']
                 ],
@@ -60,13 +60,13 @@ if (!class_exists('Ds_Admin_Ajax_Handlers')) {
             );
         
             if ($result === false) {
-                wp_send_json_error(['message' => __('Failed to create survey', 'dynamic-surveys')]);
+                wp_send_json_error(['message' => esc_html_e('Failed to create survey', 'dynamic-surveys')]);
             }
         
             $survey_data['id'] = $wpdb->insert_id;
         
             wp_send_json_success([
-                'message' => __('Survey created successfully!', 'dynamic-surveys'),
+                'message' => esc_html_e('Survey created successfully!', 'dynamic-surveys'),
                 'survey' => $survey_data
             ]);
         }
@@ -75,12 +75,12 @@ if (!class_exists('Ds_Admin_Ajax_Handlers')) {
         {
             // Verify nonce
             if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'ds_admin_nonce')) {
-                wp_send_json_error(['message' => __('Security check failed', 'dynamic-surveys')]);
+                wp_send_json_error(['message' => esc_html_e('Security check failed', 'dynamic-surveys')]);
             }
         
             // Check user capabilities
             if (!current_user_can('manage_options')) {
-                wp_send_json_error(['message' => __('Insufficient permissions', 'dynamic-surveys')]);
+                wp_send_json_error(['message' => esc_html_e('Insufficient permissions', 'dynamic-surveys')]);
             }
         
             $survey_id = intval($_POST['survey_id']);
@@ -93,7 +93,7 @@ if (!class_exists('Ds_Admin_Ajax_Handlers')) {
             );
         
             if ($result === false) {
-                wp_send_json_error(['message' => __('Failed to delete survey', 'dynamic-surveys')]);
+                wp_send_json_error(['message' => esc_html_e('Failed to delete survey', 'dynamic-surveys')]);
             }
         
             // Also delete related votes
@@ -103,19 +103,19 @@ if (!class_exists('Ds_Admin_Ajax_Handlers')) {
                 ['%d']
             );
         
-            wp_send_json_success(['message' => __('Survey deleted successfully', 'dynamic-surveys')]);
+            wp_send_json_success(['message' => esc_html_e('Survey deleted successfully', 'dynamic-surveys')]);
         }
         
         function ds_admin_toggle_survey_status_handler()
         {
             // Verify nonce
             if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'ds_admin_nonce')) {
-                wp_send_json_error(['message' => __('Security check failed', 'dynamic-surveys')]);
+                wp_send_json_error(['message' => esc_html_e('Security check failed', 'dynamic-surveys')]);
             }
         
             // Check user capabilities
             if (!current_user_can('manage_options')) {
-                wp_send_json_error(['message' => __('Insufficient permissions', 'dynamic-surveys')]);
+                wp_send_json_error(['message' => esc_html_e('Insufficient permissions', 'dynamic-surveys')]);
             }
         
             $survey_id = intval($_POST['survey_id']);
@@ -132,11 +132,11 @@ if (!class_exists('Ds_Admin_Ajax_Handlers')) {
             );
         
             if ($result === false) {
-                wp_send_json_error(['message' => __('Failed to update survey status', 'dynamic-surveys')]);
+                wp_send_json_error(['message' => esc_html_e('Failed to update survey status', 'dynamic-surveys')]);
             }
         
             wp_send_json_success([
-                'message' => __('Survey status updated successfully', 'dynamic-surveys'),
+                'message' => esc_html_e('Survey status updated successfully', 'dynamic-surveys'),
                 'new_status' => $new_status
             ]);
         }
@@ -145,17 +145,17 @@ if (!class_exists('Ds_Admin_Ajax_Handlers')) {
         {
             // Check nonce first
             if (!isset($_GET['nonce']) || !wp_verify_nonce($_GET['nonce'], 'ds_admin_nonce')) {
-                wp_die(__('Security check failed', 'dynamic-surveys'));
+                wp_die(esc_html_e('Security check failed', 'dynamic-surveys'));
             }
         
             // Check permissions
             if (!current_user_can('manage_options')) {
-                wp_die(__('You do not have sufficient permissions', 'dynamic-surveys'));
+                wp_die(esc_html_e('You do not have sufficient permissions', 'dynamic-surveys'));
             }
         
             $survey_id = isset($_GET['survey_id']) ? intval($_GET['survey_id']) : 0;
             if (!$survey_id) {
-                wp_die(__('Invalid survey ID', 'dynamic-surveys'));
+                wp_die(esc_html_e('Invalid survey ID', 'dynamic-surveys'));
             }
         
             global $wpdb;
@@ -167,7 +167,7 @@ if (!class_exists('Ds_Admin_Ajax_Handlers')) {
             ));
         
             if (!$survey) {
-                wp_die(__('Survey not found', 'dynamic-surveys'));
+                wp_die(esc_html_e('Survey not found', 'dynamic-surveys'));
             }
         
             // Get votes with user information
@@ -194,12 +194,12 @@ if (!class_exists('Ds_Admin_Ajax_Handlers')) {
         
             // CSV Headers
             fputcsv($output, array(
-                __('Question', 'dynamic-surveys'),
-                __('Option Selected', 'dynamic-surveys'),
-                __('User Email', 'dynamic-surveys'),
-                __('User Name', 'dynamic-surveys'),
-                __('IP Address', 'dynamic-surveys'),
-                __('Date', 'dynamic-surveys')
+                esc_html_e('Question', 'dynamic-surveys'),
+                esc_html_e('Option Selected', 'dynamic-surveys'),
+                esc_html_e('User Email', 'dynamic-surveys'),
+                esc_html_e('User Name', 'dynamic-surveys'),
+                esc_html_e('IP Address', 'dynamic-surveys'),
+                esc_html_e('Date', 'dynamic-surveys')
             ));
         
             $options = json_decode($survey->options, true);
@@ -209,8 +209,8 @@ if (!class_exists('Ds_Admin_Ajax_Handlers')) {
                 fputcsv($output, array(
                     $survey->question,
                     isset($options[$row->option_id]) ? $options[$row->option_id] : '',
-                    $row->user_email ?: __('Anonymous', 'dynamic-surveys'),
-                    $row->display_name ?: __('Anonymous', 'dynamic-surveys'),
+                    $row->user_email ?: esc_html_e('Anonymous', 'dynamic-surveys'),
+                    $row->display_name ?: esc_html_e('Anonymous', 'dynamic-surveys'),
                     $row->ip_address,
                     $row->created_at
                 ));

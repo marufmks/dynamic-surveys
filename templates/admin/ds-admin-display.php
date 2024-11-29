@@ -62,10 +62,10 @@ if (!defined('ABSPATH')) {
                         <?php esc_html_e('Delete', 'dynamic-surveys'); ?>
                     </button>
                     <button class="button ds-toggle-status" data-id="<?php echo esc_attr($survey->id); ?>">
-                        <?php echo $survey->status === 'open' ? esc_html__('Close', 'dynamic-surveys') : esc_html__('Open', 'dynamic-surveys'); ?>
+                        <?php echo $survey->status === 'open' ? esc_html_e('Close', 'dynamic-surveys') : esc_html_e('Open', 'dynamic-surveys'); ?>
                     </button>
                     <button type="button" class="button ds-export-csv" data-survey-id="<?php echo esc_attr($survey->id); ?>">
-                        <?php _e('Export Results (CSV)', 'dynamic-surveys'); ?>
+                        <?php esc_html_e('Export Results (CSV)', 'dynamic-surveys'); ?>
                     </button>
                 </td>
             </tr>

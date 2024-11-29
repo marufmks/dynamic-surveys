@@ -11,7 +11,7 @@ if(!class_exists('DS_Survey_Manager')) {
             $data = array(
                 'title' => sanitize_text_field($title),
                 'question' => sanitize_text_field($question),
-                'options' => json_encode(array_map('sanitize_text_field', $options)),
+                'options' => wp_json_encode(array_map('sanitize_text_field', $options)),
                 'status' => 'open'
             );
             
