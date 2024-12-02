@@ -30,7 +30,7 @@ if(!class_exists('Dynamic_Surveys_Admin_Menu')) {
             wp_enqueue_script('wp-i18n');
             wp_enqueue_script('wp-escape-html');
             
-            wp_enqueue_style('toastr-admin-css', DS_PLUGIN_URL.'/assets/css/toastr.min.css');
+            wp_enqueue_style('toastr-admin-css', DS_PLUGIN_URL.'/assets/css/toastr.min.css', array(), DS_VERSION);
             wp_enqueue_style('ds-admin-css', DS_PLUGIN_URL.'/assets/css/ds-admin.css', array(), DS_VERSION);
             
             wp_enqueue_script('jquery');

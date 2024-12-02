@@ -1,5 +1,5 @@
 === Dynamic Surveys ===
-Contributors: marufkhan
+Contributors: marufmks
 Tags: survey, polls, voting, feedback, charts
 Requires at least: 5.2
 Tested up to: 6.7
