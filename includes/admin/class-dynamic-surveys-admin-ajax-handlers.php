@@ -3,22 +3,22 @@
         exit;
     }
 
-    if (! class_exists('Ds_Admin_Ajax_Handlers')) {
+    if (! class_exists('Dynamic_Surveys_Admin_Ajax_Handlers')) {
 
-        class Ds_Admin_Ajax_Handlers
+        class Dynamic_Surveys_Admin_Ajax_Handlers
         {
 
             public function __construct()
             {
-                add_action('wp_ajax_ds_create_survey', array($this, 'ds_admin_create_survey_handler'));
-                add_action('wp_ajax_ds_delete_survey', array($this, 'ds_admin_delete_survey_handler'));
-                add_action('wp_ajax_ds_toggle_survey_status', array($this, 'ds_admin_toggle_survey_status_handler'));
-                add_action('wp_ajax_ds_export_survey', array($this, 'ds_admin_export_survey_handler'));
+                add_action('wp_ajax_dynamic_surveys_create_survey', array($this, 'dynamic_surveys_admin_create_survey_handler'));
+                add_action('wp_ajax_dynamic_surveys_delete_survey', array($this, 'dynamic_surveys_admin_delete_survey_handler'));
+                add_action('wp_ajax_dynamic_surveys_toggle_survey_status', array($this, 'dynamic_surveys_admin_toggle_survey_status_handler'));
+                add_action('wp_ajax_dynamic_surveys_export_survey', array($this, 'dynamic_surveys_handle_export_survey'));
             }
 
-            public function ds_admin_create_survey_handler()
+            public function dynamic_surveys_admin_create_survey_handler()
             {
-                if (! isset($_POST['nonce']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'ds_admin_nonce')) {
+                if (! isset($_POST['nonce']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'dynamic_surveys_admin_nonce')) {
                     wp_send_json_error(array('message' => esc_html__('Security check failed', 'dynamic-surveys')));
                 }
 
@@ -42,7 +42,7 @@
                 $options  = array_map('sanitize_text_field', wp_unslash($_POST['options']));
 
                 global $wpdb;
-                $table_name = $wpdb->prefix . 'ds_surveys';
+                $table_name = $wpdb->prefix . 'dynamic_surveys';
 
                  $result = $wpdb->insert(
                     $table_name,
@@ -74,10 +74,10 @@
             }
 
 
-            public function ds_admin_delete_survey_handler()
+            public function dynamic_surveys_admin_delete_survey_handler()
             {
                 // Verify nonce
-                if (! isset($_POST['nonce']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'ds_admin_nonce')) {
+                if (! isset($_POST['nonce']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'dynamic_surveys_admin_nonce')) {
                     wp_send_json_error(array('message' => esc_html__('Security check failed', 'dynamic-surveys')));
                 }
 
@@ -97,7 +97,7 @@
 
                 // Delete survey
                 $result = $wpdb->delete(
-                    $wpdb->prefix . 'ds_surveys',
+                    $wpdb->prefix . 'dynamic_surveys',
                     array('id' => $survey_id),
                     array('%d')
                 );
@@ -108,7 +108,7 @@
 
                 // Also delete related votes
                 $wpdb->delete(
-                    $wpdb->prefix . 'ds_votes',
+                    $wpdb->prefix . 'dynamic_surveys_votes',
                     array('survey_id' => $survey_id),
                     array('%d')
                 );
@@ -116,10 +116,10 @@
                 wp_send_json_success(array('message' => esc_html__('Survey deleted successfully', 'dynamic-surveys')));
             }
 
-            public function ds_admin_toggle_survey_status_handler()
+            public function dynamic_surveys_admin_toggle_survey_status_handler()
             {
                 // Verify nonce
-                if (! isset($_POST['nonce']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'ds_admin_nonce')) {
+                if (! isset($_POST['nonce']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'dynamic_surveys_admin_nonce')) {
                     wp_send_json_error(array('message' => esc_html__('Security check failed', 'dynamic-surveys')));
                 }
 
@@ -140,7 +140,7 @@
                 global $wpdb;
 
                 $result = $wpdb->update(
-                    $wpdb->prefix . 'ds_surveys',
+                    $wpdb->prefix . 'dynamic_surveys',
                     array('status' => $new_status),
                     array('id' => $survey_id),
                     array('%s'),
@@ -157,103 +157,70 @@
                 ));
             }
 
-            public function ds_admin_export_survey_handler()
+            public function dynamic_surveys_handle_export_survey()
             {
                 // Verify nonce
-                if (! isset($_POST['nonce']) || ! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'ds_admin_nonce')) {
+                if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'dynamic_surveys_admin_nonce')) {
                     wp_send_json_error(array('message' => esc_html__('Security check failed', 'dynamic-surveys')));
+                    exit;
                 }
 
-
-                // Check user capabilities
-                if (! current_user_can('manage_options')) {
-                    wp_die(esc_html__('You do not have sufficient permissions', 'dynamic-surveys'));
+                // Verify user capabilities
+                if (!current_user_can('manage_options')) {
+                    wp_send_json_error(array('message' => esc_html__('Permission denied', 'dynamic-surveys')));
+                    exit;
                 }
 
-                if (! isset($_GET['survey_id'])) {
-                    wp_die(esc_html__('Invalid survey ID', 'dynamic-surveys'));
+                // Get survey ID
+                $survey_id = isset($_POST['survey_id']) ? intval($_POST['survey_id']) : 0;
+                if (!$survey_id) {
+                    wp_send_json_error(array('message' => 'Invalid survey ID'));
+                    exit;
                 }
-
-                $survey_id = intval(wp_unslash($_GET['survey_id']));
 
                 global $wpdb;
-
+                
+                // Get survey details
                 $survey = $wpdb->get_row($wpdb->prepare(
-                    "SELECT * FROM {$wpdb->prefix}ds_surveys WHERE id = %d",
+                    "SELECT * FROM {$wpdb->prefix}dynamic_surveys WHERE id = %d",
                     $survey_id
                 ));
 
-                if (! $survey) {
-                    wp_die(esc_html__('Survey not found', 'dynamic-surveys'));
+                if (!$survey) {
+                    wp_send_json_error(array('message' => 'Survey not found'));
+                    exit;
                 }
 
-                // Get votes with user information
-                $results = $wpdb->get_results($wpdb->prepare(
-                    "SELECT v.*, u.user_email, u.display_name 
-                    FROM {$wpdb->prefix}ds_votes v 
+                // Get all votes for this survey
+                $votes = $wpdb->get_results($wpdb->prepare(
+                    "SELECT v.*, u.display_name 
+                    FROM {$wpdb->prefix}dynamic_surveys_votes v 
                     LEFT JOIN {$wpdb->users} u ON v.user_id = u.ID 
                     WHERE v.survey_id = %d 
-                    ORDER BY v.created_at",
+                    ORDER BY v.created_at DESC",
                     $survey_id
                 ));
 
-                // Initialize WP_Filesystem
-                global $wp_filesystem;
-                if (! function_exists('WP_Filesystem')) {
-                    require_once ABSPATH . 'wp-admin/includes/file.php';
-                }
-                WP_Filesystem();
+                // Prepare CSV data
+                $csv_data = array();
+                $csv_data[] = array('User', 'Option Selected', 'IP Address', 'Date');
 
-                // Use WP_Filesystem for output
-                $temp_file = wp_tempnam();
-                if (! $temp_file) {
-                    wp_die(esc_html__('Unable to create a temporary file.', 'dynamic-surveys'));
-                }
-
-                $output = '';
-                // Add UTF-8 BOM for proper Excel encoding
-                $output .= chr(0xEF) . chr(0xBB) . chr(0xBF);
-
-                // CSV Headers
-                $output .= implode(',', array(
-                    esc_html__('Question', 'dynamic-surveys'),
-                    esc_html__('Option Selected', 'dynamic-surveys'),
-                    esc_html__('User Email', 'dynamic-surveys'),
-                    esc_html__('Display Name', 'dynamic-surveys'),
-                    esc_html__('Created At', 'dynamic-surveys'),
-                )) . "\n";
-
-                // CSV Data Rows
-                foreach ($results as $row) {
-                    $output .= implode(',', array(
-                        $survey->question,
-                        $row->option_selected,
-                        $row->user_email,
-                        $row->display_name,
-                        $row->created_at,
-                    )) . "\n";
+                foreach ($votes as $vote) {
+                    $csv_data[] = array(
+                        $vote->display_name ?: 'Anonymous',
+                        $vote->option_id,
+                        $vote->ip_address,
+                        $vote->created_at
+                    );
                 }
 
-                // Save file content
-                $wp_filesystem->put_contents($temp_file, $output);
-
-                // Output the file using WP_Filesystem
-                header('Content-Type: text/csv; charset=utf-8');
-                header('Content-Disposition: attachment; filename=survey-' . esc_attr($survey_id) . '-results.csv');
-
-                $file_contents = $wp_filesystem->get_contents($temp_file);
-
-                // Escape the file contents for safe output
-                if ($file_contents !== false) {
-                    echo esc_textarea($file_contents); // Escaping multi-line plain text content for output
-                }
-
-                // Delete the temporary file
-                wp_delete_file($temp_file);
-
-                exit;
+                // Send JSON response with CSV data
+                wp_send_json_success(array(
+                    'data' => $csv_data,
+                    'filename' => sanitize_title($survey->title) . '-results.csv'
+                ));
             }
         }
     }
 
-    new Ds_Admin_Ajax_Handlers();
+    new Dynamic_Surveys_Admin_Ajax_Handlers();

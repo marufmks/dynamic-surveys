@@ -45,7 +45,7 @@ From the Existing Surveys table, you can:
 
 ### Embedding Surveys
 
-1. Copy the shortcode for your survey (e.g., `[dynamic_survey id="1"]`)
+1. Copy the shortcode for your survey (e.g., `[dynamic_surveys id="1"]`)
 2. Paste it into any post or page where you want the survey to appear
 
 ### Viewing Results
@@ -72,7 +72,7 @@ A: When a survey is closed, users will see a message indicating that the survey 
 
 ## Support
 
-For support, please visit the [plugin's GitHub repository](https://github.com/marufmks/dynamic-survey) or create a support ticket.
+For support, please visit the [plugin's GitHub repository](https://github.com/marufmks/dynamic-surveys) or create a support ticket.
 
 ## Contributing
 

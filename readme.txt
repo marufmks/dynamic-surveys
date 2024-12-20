@@ -1,10 +1,10 @@
 === Dynamic Surveys ===
 Contributors: marufmks
-Tags: survey, polls, voting, feedback, charts
-Requires at least: 5.2
-Tested up to: 6.7
-Requires PHP: 7.2
+Tags: surveys, forms, feedback, polls, voting
 Stable tag: 1.0.0
+Tested up to: 6.7
+Requires at least: 5.8
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,28 +25,28 @@ Dynamic Surveys is a lightweight yet powerful WordPress plugin that enables site
 * One-click shortcode copying
 * Toast notifications for better user experience
 * Translation-ready
+* Export results to CSV format
 
 = Usage =
 
-1. Create surveys from the WordPress admin panel
+1. Create surveys from the WordPress admin panel under Tools > Dynamic Surveys
 2. Copy the generated shortcode
 3. Paste the shortcode in any post or page
 4. Users can vote and see results instantly
 
-= Pro Features (Coming Soon) =
+= Shortcode =
 
-* Multiple chart types
-* Export results to CSV
-* Custom styling options
-* Advanced analytics
-* Multiple votes per user option
-* Guest voting capability
+Use the following shortcode to display a survey:
+`[dynamic_surveys id="1"]`
+
+Replace "1" with your actual survey ID.
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/dynamic-surveys` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/dynamic-surveys` directory, or install the plugin through the WordPress plugins screen directly
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. Go to Tools > Dynamic Surveys to create and manage surveys
+4. Use the shortcode [dynamic_surveys id="X"] to display surveys in your posts or pages
 
 == Frequently Asked Questions ==
 
@@ -84,6 +84,7 @@ Yes, the plugin is fully translation-ready and can be translated into any langua
 * Mobile-responsive design
 * Toast notifications
 * Copy shortcode functionality
+* CSV export functionality
 
 == Upgrade Notice ==
 

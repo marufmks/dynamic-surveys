@@ -1,6 +1,9 @@
 <?php
+if (!defined('ABSPATH')) {
+    exit;
+}
 
-class Ds_Activator
+class Dynamic_Surveys_Activator
 {
 
 
@@ -12,7 +15,7 @@ class Ds_Activator
 		$charset_collate = $wpdb->get_charset_collate();
 
 		// Create surveys table
-		$sql_surveys = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}ds_surveys (
+		$sql_surveys = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}dynamic_surveys (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         title varchar(255) NOT NULL,
         question text NOT NULL,
@@ -23,7 +26,7 @@ class Ds_Activator
     ) $charset_collate;";
 
 		// Create votes table
-		$sql_votes = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}ds_votes (
+		$sql_votes = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}dynamic_surveys_votes (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         survey_id mediumint(9) NOT NULL,
         user_id bigint(20) NOT NULL,
@@ -38,6 +41,7 @@ class Ds_Activator
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 		dbDelta($sql_surveys);
 		dbDelta($sql_votes);
+
 
 	}
 
