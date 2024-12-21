@@ -1,118 +1,114 @@
 === Dynamic Surveys ===
-Contributors: marufmks
-Tags: surveys, forms, feedback, polls, voting
-Stable tag: 1.0.0
-Tested up to: 6.7
-Requires at least: 5.8
-Requires PHP: 7.4
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Contributors: marufmks  
+Tags: surveys, forms, feedback, polls, voting  
+Stable tag: 1.0.1  
+Tested up to: 6.7  
+Requires at least: 5.8  
+Requires PHP: 7.4  
+License: GPLv2 or later  
+License URI: https://www.gnu.org/licenses/gpl-2.0.html  
 
 Create and manage simple surveys with real-time results display using beautiful pie charts.
 
 == Description ==
 
-Dynamic Surveys is a lightweight yet powerful WordPress plugin that enables site administrators to create and manage surveys easily. Users can participate in surveys, and results are displayed in real-time using beautiful pie charts.
+Dynamic Surveys is a lightweight yet powerful WordPress plugin that enables site administrators to create and manage surveys effortlessly. Users can participate in surveys, and results are displayed in real time using responsive pie charts powered by Chart.js.
 
-= Features =
+### Features
 
-* Easy survey creation with multiple options
-* Real-time results display using pie charts
-* Shortcode support for embedding surveys anywhere
-* User-based voting system to prevent duplicate votes
-* Survey status management (open/closed)
-* Mobile-responsive design
-* One-click shortcode copying
-* Toast notifications for better user experience
-* Translation-ready
-* Export results to CSV format
+- Easy survey creation with customizable options  
+- Real-time results display with beautiful pie charts  
+- Shortcode support for embedding surveys anywhere  
+- User-based voting system to prevent duplicate votes  
+- Survey status management (open/closed)  
+- Mobile-responsive design  
+- One-click shortcode copying for easy implementation  
+- Toast notifications for better user experience  
+- Translation-ready for multilingual sites  
+- Export survey results to CSV format  
 
-= Usage =
+### Usage Instructions
 
-1. Create surveys from the WordPress admin panel under Tools > Dynamic Surveys
-2. Copy the generated shortcode
-3. Paste the shortcode in any post or page
-4. Users can vote and see results instantly
+1. Navigate to **Tools > Dynamic Surveys** in the WordPress admin panel.  
+2. Create surveys with multiple-choice options.  
+3. Copy the generated shortcode for your survey.  
+4. Paste the shortcode into any post or page.  
+5. Users can vote and view results instantly.
 
-= Shortcode =
-
-Use the following shortcode to display a survey:
-`[dynamic_surveys id="1"]`
-
-Replace "1" with your actual survey ID.
+**Example Shortcode**:  
+`[dynamic_surveys id="1"]`  
+Replace `1` with your actual survey ID.
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/dynamic-surveys` directory, or install the plugin through the WordPress plugins screen directly
-2. Activate the plugin through the 'Plugins' screen in WordPress
-3. Go to Tools > Dynamic Surveys to create and manage surveys
-4. Use the shortcode [dynamic_surveys id="X"] to display surveys in your posts or pages
+1. Upload the plugin files to the `/wp-content/plugins/dynamic-surveys/` directory, or install the plugin via the WordPress Plugins screen.  
+2. Activate the plugin through the "Plugins" screen in WordPress.  
+3. Go to **Tools > Dynamic Surveys** to create and manage your surveys.  
+4. Use the `[dynamic_surveys id="X"]` shortcode to display surveys in your posts or pages.
 
 == Frequently Asked Questions ==
 
-= Can users vote multiple times? =
+### Can users vote multiple times?  
+No, the plugin tracks votes by user ID and prevents duplicate voting to ensure accuracy.
 
-No, the plugin tracks votes by user ID and prevents duplicate voting.
+### Do I need coding skills to use this plugin?  
+No coding knowledge is required. The plugin provides an intuitive interface to create and manage surveys.
 
-= Do I need to know coding to use this plugin? =
+### Can I customize the appearance of surveys?  
+Yes, you can add custom CSS to match your site's theme.
 
-No coding knowledge is required. The plugin provides a simple interface to create and manage surveys.
-
-= Can I customize the appearance of the surveys? =
-
-Yes, you can customize the appearance using CSS. The plugin includes basic styling that works with most themes.
-
-= Is the plugin translation-ready? =
-
-Yes, the plugin is fully translation-ready and can be translated into any language.
+### Is the plugin translation-ready?  
+Yes, the plugin is translation-ready and supports localization.
 
 == Screenshots ==
 
-1. Survey creation interface
-2. Survey management screen
-3. Frontend survey display
-4. Results display with pie chart
+1. Survey creation interface  
+2. Survey management screen  
+3. Frontend survey display  
+4. Results display with a responsive pie chart  
 
 == Changelog ==
 
-= 1.0.0 =
-* Initial release
-* Basic survey creation and management
-* Real-time results display
-* User vote tracking
-* Shortcode support
-* Mobile-responsive design
-* Toast notifications
-* Copy shortcode functionality
-* CSV export functionality
+### 1.0.1
+* Fixed prefix naming issues to ensure compatibility.  
+* Removed redundant "Requires" headers from `readme.txt`.  
+* Fixed PHP whitespace issues.  
+* Enhanced code quality based on WordPress Plugin Review feedback.  
+
+### 1.0.0  
+* Initial release.  
+* Basic survey creation and management.  
+* Real-time results display using pie charts.  
+* User vote tracking.  
+* Shortcode support for survey embedding.  
+* Mobile-responsive design.  
+* CSV export functionality.  
 
 == Upgrade Notice ==
 
-= 1.0.0 =
-Initial release of Dynamic Surveys plugin.
+### 1.0.1  
+This update resolves compatibility issues and includes important fixes to meet WordPress Plugin Directory requirements.
 
 == Privacy Policy ==
 
-Dynamic Surveys plugin stores the following data:
-* Survey questions and options
-* User votes (user ID and selected option)
-* IP addresses of voters
+Dynamic Surveys plugin stores the following data:  
+- Survey questions and options.  
+- User votes (user ID and selected option).  
+- IP addresses of voters.  
 
-This data is stored in your WordPress database and is not shared with any third party.
+This data is stored in your WordPress database and is not shared with any third parties.
 
 == Credits ==
 
-Dynamic Surveys uses the following third-party resources:
-
-* Chart.js - MIT License
-* Toastr - MIT License
+Dynamic Surveys utilizes the following open-source libraries:  
+- **Chart.js** - [MIT License](https://opensource.org/licenses/MIT)  
+- **Toastr.js** - [MIT License](https://opensource.org/licenses/MIT)  
 
 == Support ==
 
-For support, please visit:
-[Plugin Support Forum](https://wordpress.org/support/plugin/dynamic-surveys/)
+For support, please visit the [Plugin Support Forum](https://wordpress.org/support/plugin/dynamic-surveys/).
 
 == Contribute ==
 
-You can contribute to the development of this plugin on GitHub:
-[Dynamic Surveys on GitHub](https://github.com/marufmks/dynamic-surveys) 
+Contributions are welcome! You can contribute to the development of this plugin on GitHub:  
+[Dynamic Surveys on GitHub](https://github.com/marufmks/dynamic-surveys)
