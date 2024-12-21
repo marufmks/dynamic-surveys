@@ -1,13 +1,13 @@
 <?php
 /**
  * @link              https://github.com/marufmks
- * @since             1.0.0
+ * @since             1.0.1
  * @package           Dynamic Surveys
  *
  * @wordpress-plugin
  * Plugin Name:       Dynamic Surveys
  * Description:       Create and manage interactive surveys and display survey results in real-time using beautiful charts. Export survey data to CSV format.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 5.8
  * Requires PHP:       7.4
  * Author:            Maruf Khan
@@ -25,7 +25,7 @@ if (!defined('ABSPATH')) {
 // Define plugin constants
 define('DYNAMIC_SURVEYS_PATH', plugin_dir_path(__FILE__));
 define('DYNAMIC_SURVEYS_URL', plugin_dir_url(__FILE__));
-define('DYNAMIC_SURVEYS_VERSION', '1.0.0');
+define('DYNAMIC_SURVEYS_VERSION', '1.0.1');
 
 // Load plugin text domain
 load_plugin_textdomain('dynamic-surveys', false, DYNAMIC_SURVEYS_PATH . '/languages');
